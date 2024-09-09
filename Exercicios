@@ -1,0 +1,364 @@
+CLASSE PRINCIPAL 
+public class ProgramaPrincipal {
+    public static void main(String[] args) {
+        
+        FormaGeometrica circulo = new Circulo(5.0);
+        FormaGeometrica retangulo = new Retangulo(4.0, 6.0);
+        FormaGeometrica triangulo = new Triangulo(3.0, 4.0);
+
+        
+        System.out.println("Área do círculo: " + circulo.calcularArea());
+        System.out.println("Área do retângulo: " + retangulo.calcularArea());
+        System.out.println("Área do triângulo: " + triangulo.calcularArea());
+    }
+}
+
+public abstract class FormaGeometrica {
+  
+    public abstract double calcularArea();
+}
+
+public class Circulo extends FormaGeometrica {
+    private double raio;
+
+    public Circulo(double raio) {
+        this.raio = raio;
+    }
+
+    @Override
+    public double calcularArea() {
+        return Math.PI * raio * raio;
+    }
+}
+
+public class Retangulo extends FormaGeometrica {
+    private double largura;
+    private double altura;
+
+    public Retangulo(double largura, double altura) {
+        this.largura = largura;
+        this.altura = altura;
+    }
+
+    @Override
+    public double calcularArea() {
+        return largura * altura;
+    }
+}
+
+public class Triangulo extends FormaGeometrica {
+    private double base;
+    private double altura;
+
+    public Triangulo(double base, double altura) {
+        this.base = base;
+        this.altura = altura;
+    }
+
+    @Override
+    public double calcularArea() {
+        return (base * altura) / 2;
+    }
+}
+
+2.
+CLASSE PRINCIPAL
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProgramaPrincipal {
+    public static void main(String[] args) {
+        
+        List<Animal> animais = new ArrayList<>();
+        
+        
+        animais.add(new Cachorro());
+        animais.add(new Gato());
+        animais.add(new Passaro());
+
+        
+        for (Animal animal : animais) {
+            animal.emitirSom();
+            animal.mover();
+            System.out.println();
+        }
+    }
+}
+
+public abstract class Animal {
+    
+    public abstract void emitirSom();
+  
+    public abstract void mover();
+}
+
+public class Cachorro extends Animal {
+    @Override
+    public void emitirSom() {
+        System.out.println("O cachorro faz: Au Au");
+    }
+
+    @Override
+    public void mover() {
+        System.out.println("O cachorro corre.");
+    }
+}
+
+public class Gato extends Animal {
+    @Override
+    public void emitirSom() {
+        System.out.println("O gato faz: Miau");
+    }
+
+    @Override
+    public void mover() {
+        System.out.println("O gato pula.");
+    }
+}
+
+public class Passaro extends Animal {
+    @Override
+    public void emitirSom() {
+        System.out.println("O pássaro faz: Piu Piu");
+    }
+
+    @Override
+    public void mover() {
+        System.out.println("O pássaro voa.");
+    }
+}
+
+3.
+CLASSE PRINCIPAL
+public class ProgramaPrincipal {
+    public static void main(String[] args) {
+      
+        ContaBancaria contaCorrente = new ContaCorrente(1000.00, 500.00);
+        ContaBancaria contaPoupanca = new ContaPoupanca(2000.00);
+
+      
+        realizarOperacoes(contaCorrente);
+        realizarOperacoes(contaPoupanca);
+    }
+
+    public static void realizarOperacoes(ContaBancaria conta) {
+        conta.depositar(500.00);
+        conta.sacar(200.00);
+
+        if (conta instanceof ContaPoupanca) {
+            ((ContaPoupanca) conta).aplicarJuros();
+        }
+    }
+}
+
+
+    protected double saldo;
+
+    
+    public ContaBancaria(double saldoInicial) {
+        this.saldo = saldoInicial;
+    }
+
+    
+    public abstract void sacar(double valor);
+
+    
+    public abstract void depositar(double valor);
+
+  
+    public double getSaldo() {
+        return saldo;
+    }
+}
+
+public class ContaCorrente extends ContaBancaria {
+    private double limite;
+
+    public ContaCorrente(double saldoInicial, double limite) {
+        super(saldoInicial);
+        this.limite = limite;
+    }
+
+    @Override
+    public void sacar(double valor) {
+        if (valor <= saldo + limite) {
+            saldo -= valor;
+            System.out.println("Saque de R$" + valor + " realizado. Saldo atual: R$" + saldo);
+        } else {
+            System.out.println("Saldo insuficiente para saque de R$" + valor);
+        }
+    }
+
+    @Override
+    public void depositar(double valor) {
+        saldo += valor;
+        System.out.println("Depósito de R$" + valor + " realizado. Saldo atual: R$" + saldo);
+    }
+}
+
+public class ContaPoupanca extends ContaBancaria {
+    private static final double TAXA_JUROS = 0.02; // 2% de juros
+
+    public ContaPoupanca(double saldoInicial) {
+        super(saldoInicial);
+    }
+
+    @Override
+    public void sacar(double valor) {
+        if (valor <= saldo) {
+            saldo -= valor;
+            System.out.println("Saque de R$" + valor + " realizado. Saldo atual: R$" + saldo);
+        } else {
+            System.out.println("Saldo insuficiente para saque de R$" + valor);
+        }
+    }
+
+    @Override
+    public void depositar(double valor) {
+        saldo += valor;
+        System.out.println("Depósito de R$" + valor + " realizado. Saldo atual: R$" + saldo);
+    }
+
+    public void aplicarJuros() {
+        double juros = saldo * TAXA_JUROS;
+        saldo += juros;
+        System.out.println("Juros de R$" + juros + " aplicados. Saldo atual: R$" + saldo);
+    }
+}
+
+4.
+CLASSE PRINCIPAL
+public class ProgramaPrincipal {
+    public static void main(String[] args) {
+        
+        Pagamento pagamentoCartao = new PagamentoCartaoCredito(100.00, 5.0); // 5% de taxa de juros
+        Pagamento pagamentoBoleto = new PagamentoBoleto(100.00, 2.50); // R$2.50 de taxa de boleto
+
+        
+        calcularEImprimirValor(pagamentoCartao);
+        calcularEImprimirValor(pagamentoBoleto);
+    }
+
+    public static void calcularEImprimirValor(Pagamento pagamento) {
+        double valor = pagamento.calcularValor();
+        System.out.println("Valor total do pagamento: R$" + valor);
+    }
+}
+
+public abstract class Pagamento {
+    public abstract double calcularValor();
+}
+
+public class PagamentoCartaoCredito extends Pagamento {
+    private double valorCompra;
+    private double taxaJuros;
+
+    public PagamentoCartaoCredito(double valorCompra, double taxaJuros) {
+        this.valorCompra = valorCompra;
+        this.taxaJuros = taxaJuros;
+    }
+
+    @Override
+    public double calcularValor() {
+        return valorCompra + (valorCompra * taxaJuros / 100);
+    }
+}
+public class PagamentoCartaoCredito extends Pagamento {
+    private double valorCompra;
+    private double taxaJuros;
+
+    public PagamentoCartaoCredito(double valorCompra, double taxaJuros) {
+        this.valorCompra = valorCompra;
+        this.taxaJuros = taxaJuros;
+    }
+
+    @Override
+    public double calcularValor() {
+        return valorCompra + (valorCompra * taxaJuros / 100);
+    }
+}
+
+public class PagamentoCartaoCredito extends Pagamento {
+    private double valorCompra;
+    private double taxaJuros;
+
+    public PagamentoCartaoCredito(double valorCompra, double taxaJuros) {
+        this.valorCompra = valorCompra;
+        this.taxaJuros = taxaJuros;
+    }
+
+    @Override
+    public double calcularValor() {
+        return valorCompra + (valorCompra * taxaJuros / 100);
+    }
+}
+
+5.
+CLASSE PRINCIPAL
+public class ProgramaPrincipal {
+    public static void main(String[] args) {
+        
+        Funcionario gerente = new Gerente("Alice", 5000.00, 1000.00); // Gerente com bônus
+        Funcionario programador = new Programador("Bob", 4000.00, 20, 50.00); // Programador com horas extras
+
+        
+        calcularEImprimirSalario(gerente);
+        calcularEImprimirSalario(programador);
+    }
+
+    public static void calcularEImprimirSalario(Funcionario funcionario) {
+        double salario = funcionario.calcularSalario();
+        System.out.println("Salário de " + funcionario.getNome() + ": R$" + salario);
+    }
+}
+
+public abstract class Funcionario {
+    protected String nome;
+    protected double salarioBase;
+
+    
+    public Funcionario(String nome, double salarioBase) {
+        this.nome = nome;
+        this.salarioBase = salarioBase;
+    }
+
+    
+    public abstract double calcularSalario();
+
+    
+    public String getNome() {
+        return nome;
+    }
+}
+
+public class Gerente extends Funcionario {
+    private double bonus;
+
+    
+    public Gerente(String nome, double salarioBase, double bonus) {
+        super(nome, salarioBase);
+        this.bonus = bonus;
+    }
+
+    @Override
+    public double calcularSalario() {
+        return salarioBase + bonus;
+    }
+}
+
+public class Programador extends Funcionario {
+    private double horasExtras;
+    private double valorHoraExtra;
+
+    
+    public Programador(String nome, double salarioBase, double horasExtras, double valorHoraExtra) {
+        super(nome, salarioBase);
+        this.horasExtras = horasExtras;
+        this.valorHoraExtra = valorHoraExtra;
+    }
+
+    @Override
+    public double calcularSalario() {
+        return salarioBase + (horasExtras * valorHoraExtra);
+    }
+}
